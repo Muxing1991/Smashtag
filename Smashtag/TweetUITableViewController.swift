@@ -91,6 +91,9 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
     //根据autolayout自动
     tableView.rowHeight = UITableViewAutomaticDimension
     refresh()
+    
+    //MARK: attributedText 测试
+//    SearchTextField.attributedText = NSAttributedString(string: "#trump", attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 15.0)!,NSForegroundColorAttributeName:UIColor.blueColor()])
   }
   
    struct MyContant{

@@ -27,14 +27,8 @@ class TweetTableViewCell: UITableViewCell {
     tweetAvatar?.image = nil
     
     if let tweet = self.tweet{
-      tweetTest?.text = tweet.text
-      if tweetTest?.text != nil{
-        for _ in tweet.media{
-          tweetTest.text! += " 📷"
-        }
-      }
+      tweetTest?.attributedText = highLight(tweet)
       tweetName?.text = "\(tweet.user)"
-      
       if let profileImageURL = tweet.user.profileImageURL{
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
         let queue = dispatch_get_global_queue(qos, 0)
@@ -49,5 +43,27 @@ class TweetTableViewCell: UITableViewCell {
         
       }
     }
+  }
+  func highLight(tweet: Tweet) -> NSAttributedString{
+    var input = tweet.text!
+    for _ in tweet.media{
+      //在结尾加上字符 不会影响下面的NSRange
+      input += " 📷"
+    }
+    let source = NSMutableAttributedString(string: input)
+    let hashtagsAttr = [NSForegroundColorAttributeName: UIColor.redColor()]
+    let urlAttr = [NSForegroundColorAttributeName: UIColor.blueColor()]
+    let userNameAttr = [NSForegroundColorAttributeName: UIColor.orangeColor()]
+    for hashtag in tweet.hashtags{
+      source.addAttributes(hashtagsAttr, range: hashtag.nsrange)
+    }
+    for url in tweet.urls{
+      source.addAttributes(urlAttr, range: url.nsrange)
+    }
+    for mentions in tweet.userMentions{
+      source.addAttributes(userNameAttr, range: mentions.nsrange)
+    }
+    return source
+    
   }
 }
