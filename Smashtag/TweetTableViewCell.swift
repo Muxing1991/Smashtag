@@ -51,19 +51,17 @@ class TweetTableViewCell: UITableViewCell {
       input += " 📷"
     }
     let source = NSMutableAttributedString(string: input)
-    let hashtagsAttr = [NSForegroundColorAttributeName: UIColor.redColor()]
-    let urlAttr = [NSForegroundColorAttributeName: UIColor.blueColor()]
-    let userNameAttr = [NSForegroundColorAttributeName: UIColor.orangeColor()]
-    for hashtag in tweet.hashtags{
-      source.addAttributes(hashtagsAttr, range: hashtag.nsrange)
-    }
-    for url in tweet.urls{
-      source.addAttributes(urlAttr, range: url.nsrange)
-    }
-    for mentions in tweet.userMentions{
-      source.addAttributes(userNameAttr, range: mentions.nsrange)
-    }
+    //参照Twitter客户端 所有的mentions都是近似蓝色的 所以只用一种Attribute
+    let attr = [NSForegroundColorAttributeName: UIColor.init(red: 27/255, green: 128/255, blue: 217/255, alpha: 1.0)]
+    source.addAttributes(attr, indexKeywords: tweet.urls + tweet.hashtags + tweet.userMentions)
     return source
-    
+  }
+}
+//扩展NSMutableAttributedString
+private extension NSMutableAttributedString{
+  func addAttributes(attrs:[String: AnyObject], indexKeywords: [Tweet.IndexedKeyword]){
+    for keyword in indexKeywords{
+      self.addAttributes(attrs, range: keyword.nsrange)
+    }
   }
 }
