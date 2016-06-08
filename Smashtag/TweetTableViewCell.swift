@@ -56,6 +56,7 @@ class TweetTableViewCell: UITableViewCell {
     source.addAttributes(attr, indexKeywords: tweet.urls + tweet.hashtags + tweet.userMentions)
     return source
   }
+  
 }
 //扩展NSMutableAttributedString
 private extension NSMutableAttributedString{
