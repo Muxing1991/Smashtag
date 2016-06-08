@@ -113,4 +113,18 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
     return cell
   }
   
+  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    if let detail = segue.destinationViewController as? DetailUITableViewController {
+      if let cell = sender as? TweetTableViewCell{
+        detail.mentions = Mentions(tweet: cell.tweet!)
+      }
+    }
+//    if let detailNav = segue.destinationViewController as? UINavigationController{
+//      if let detail = detailNav.viewControllers[0] as? DetailUITableViewController{
+//        if let cell = sender as? TweetTableViewCell{
+//          detail.mentions = Mentions(tweet: cell.tweet!)
+//        }
+//      }
+//    }
+  }
 }
