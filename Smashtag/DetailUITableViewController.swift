@@ -34,26 +34,42 @@ class DetailUITableViewController: UITableViewController {
     return nil
   }
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    //取出section的成员 进行switch匹配 重复代码！
     switch mentions!.msg[indexPath.section]{
     case .Images(let mediaItems):
-      let cell = tableView.dequeueReusableCellWithIdentifier("detailImage", forIndexPath: indexPath) as! DetailImageUITableViewCell
+      let cell = dequeueDetailImageCellWithIdentifier(indexPath)
       cell.imageUrl = mediaItems[indexPath.row].url
       return cell
     case .Hashtags(let items):
-    let cell = tableView.dequeueReusableCellWithIdentifier("detailLabel", forIndexPath: indexPath) as! DetailLabelUITableViewCell
+    let cell = dequeueDetailLabelCellWithIdentifier(indexPath)
       cell.mentionLabel.text = items[indexPath.row].keyword
       return cell
     case .Urls(let items):
-      let cell = tableView.dequeueReusableCellWithIdentifier("detailLabel", forIndexPath: indexPath) as! DetailLabelUITableViewCell
+      let cell = dequeueDetailLabelCellWithIdentifier(indexPath)
       cell.mentionLabel.text = items[indexPath.row].keyword
       return cell
     case .UsersMention(let items):
-      let cell = tableView.dequeueReusableCellWithIdentifier("detailLabel", forIndexPath: indexPath) as! DetailLabelUITableViewCell
+      let cell = dequeueDetailLabelCellWithIdentifier(indexPath)
       cell.mentionLabel.text = items[indexPath.row].keyword
       return cell
     }
   }
+  //函数的柯里化currying
+  private func cellForCurrying(identifier: String) -> (NSIndexPath) -> UITableViewCell{
+    return {
+      indexpath in
+      let cell  = self.tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexpath) 
+      return cell
+    }
+  }
+  
+  //两个柯里化函数量产的函数
+  func dequeueDetailLabelCellWithIdentifier(myindex: NSIndexPath) -> DetailLabelUITableViewCell{
+    return cellForCurrying("detailLabel")(myindex) as! DetailLabelUITableViewCell
+  }
+  func dequeueDetailImageCellWithIdentifier(myindex: NSIndexPath) -> DetailImageUITableViewCell {
+    return cellForCurrying("detailImage")(myindex) as! DetailImageUITableViewCell
+  }
+  
   //设定行高   根据不同的section
   override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
     switch mentions!.msg[indexPath.section]{
