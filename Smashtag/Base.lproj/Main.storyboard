@@ -104,7 +104,7 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="182"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2Hq-JF-2FN" id="BTQ-1z-hT4">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="182"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="181.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dGe-h1-zGF">
@@ -146,6 +146,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="mentionLabel" destination="HnL-gR-BLF" id="e2H-H0-ztH"/>
+                                    <segue destination="51m-5h-o89" kind="unwind" identifier="goBackSearch" unwindAction="goBack:" id="wNU-EV-SPF"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -157,6 +158,7 @@
                     <navigationItem key="navigationItem" id="AWc-Pn-D9n"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1fg-DX-nRQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="51m-5h-o89" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2151" y="403"/>
         </scene>

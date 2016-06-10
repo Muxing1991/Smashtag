@@ -18,6 +18,11 @@ class DetailUITableViewController: UITableViewController {
     super.viewDidLoad()
     
   }
+  private class MyConstan{
+    static let goBackSearch = "goBackSearch"
+    static let lebelCellId = "detailLabel"
+    static let imageCellId = "detailImage"
+  }
   
   //MARK: tableview.datasource
   override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -67,10 +72,10 @@ class DetailUITableViewController: UITableViewController {
   
   //两个柯里化函数量产的函数
   func dequeueDetailLabelCellWithIdentifier(myindex: NSIndexPath) -> DetailLabelUITableViewCell{
-    return cellForCurrying("detailLabel")(myindex) as! DetailLabelUITableViewCell
+    return cellForCurrying(MyConstan.lebelCellId)(myindex) as! DetailLabelUITableViewCell
   }
   func dequeueDetailImageCellWithIdentifier(myindex: NSIndexPath) -> DetailImageUITableViewCell {
-    return cellForCurrying("detailImage")(myindex) as! DetailImageUITableViewCell
+    return cellForCurrying(MyConstan.imageCellId)(myindex) as! DetailImageUITableViewCell
   }
   
   //设定行高   根据不同的section
@@ -82,6 +87,25 @@ class DetailUITableViewController: UITableViewController {
       return rowHeight
     default:
       return UITableViewAutomaticDimension
+    }
+  }
+  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    if let id = segue.identifier{
+      switch id{
+      case MyConstan.goBackSearch:
+        if let tvc = segue.destinationViewController as? TweetTableViewController{
+          if let selectIndex = tableView.indexPathForSelectedRow{
+            switch mentions!.msg[selectIndex.section]{
+            case .Hashtags(let items):
+              tvc.searchText = items[selectIndex.row].keyword
+            case .UsersMention(let items):
+              tvc.searchText = items[selectIndex.row].keyword
+            default: break
+            }
+          }
+        }
+      default: break
+      }
     }
   }
   
