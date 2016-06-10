@@ -58,7 +58,7 @@
                                     <outlet property="tweetAvatar" destination="Tbf-Bt-dPe" id="0WO-md-awt"/>
                                     <outlet property="tweetName" destination="gpE-RS-5vB" id="uxs-VG-QWz"/>
                                     <outlet property="tweetTest" destination="OMa-cT-4w5" id="ih7-iF-k66"/>
-                                    <segue destination="gfY-nf-5Qz" kind="show" id="Kic-r4-SZA"/>
+                                    <segue destination="gfY-nf-5Qz" kind="show" identifier="showMentions" id="Kic-r4-SZA"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -104,22 +104,28 @@
                                 <rect key="frame" x="0.0" y="92" width="600" height="182"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2Hq-JF-2FN" id="BTQ-1z-hT4">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="181.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="182"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dGe-h1-zGF">
-                                            <rect key="frame" x="8" y="8" width="584" height="165.5"/>
+                                            <rect key="frame" x="8" y="8" width="584" height="166"/>
                                         </imageView>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="GRe-QQ-wVd">
+                                            <rect key="frame" x="290" y="81" width="20" height="20"/>
+                                        </activityIndicatorView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="GRe-QQ-wVd" firstAttribute="centerY" secondItem="dGe-h1-zGF" secondAttribute="centerY" id="NqL-8O-Twb"/>
                                         <constraint firstAttribute="leadingMargin" secondItem="dGe-h1-zGF" secondAttribute="leading" id="Sov-RD-ukd"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="dGe-h1-zGF" secondAttribute="trailing" id="a4K-yx-g2H"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="dGe-h1-zGF" secondAttribute="bottom" id="j1V-Fb-4TY"/>
                                         <constraint firstAttribute="topMargin" secondItem="dGe-h1-zGF" secondAttribute="top" id="xeM-u4-7eH"/>
+                                        <constraint firstItem="GRe-QQ-wVd" firstAttribute="centerX" secondItem="dGe-h1-zGF" secondAttribute="centerX" id="z1h-QX-Ers"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="detailImage" destination="dGe-h1-zGF" id="DZU-eL-LaQ"/>
+                                    <outlet property="spinner" destination="GRe-QQ-wVd" id="gjt-BZ-HbF"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="detailLabel" textLabel="HnL-gR-BLF" rowHeight="37" style="IBUITableViewCellStyleDefault" id="rHJ-cJ-0cA" customClass="DetailLabelUITableViewCell" customModule="Smashtag" customModuleProvider="target">

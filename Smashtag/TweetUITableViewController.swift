@@ -96,8 +96,9 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
 //    SearchTextField.attributedText = NSAttributedString(string: "#trump", attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 15.0)!,NSForegroundColorAttributeName:UIColor.blueColor()])
   }
   
-   struct MyContant{
-      static private let cellIdentifier = "tweetCell"
+  struct MyContant{
+    static private let cellIdentifier = "tweetCell"
+    static private let showMentions = "showMentions"
   }
   
   //MARK: tableView dataSource
@@ -114,17 +115,15 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
   }
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    if let detail = segue.destinationViewController as? DetailUITableViewController {
-      if let cell = sender as? TweetTableViewCell{
-        detail.mentions = Mentions(tweet: cell.tweet!)
+    if segue.identifier == MyContant.showMentions{
+      if let detail = segue.destinationViewController as? DetailUITableViewController {
+        if let cell = sender as? TweetTableViewCell{
+          detail.mentions = Mentions(tweet: cell.tweet!)
+          if let indexPathSelect = tableView.indexPathForSelectedRow{
+            detail.userName = tweets[indexPathSelect.section][indexPathSelect.row].user.name
+          }
+        }
       }
     }
-//    if let detailNav = segue.destinationViewController as? UINavigationController{
-//      if let detail = detailNav.viewControllers[0] as? DetailUITableViewController{
-//        if let cell = sender as? TweetTableViewCell{
-//          detail.mentions = Mentions(tweet: cell.tweet!)
-//        }
-//      }
-//    }
   }
 }

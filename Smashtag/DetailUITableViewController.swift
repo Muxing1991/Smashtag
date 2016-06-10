@@ -10,8 +10,11 @@ import UIKit
 
 class DetailUITableViewController: UITableViewController {
   var mentions: Mentions?
-  
+  var userName: String?
   override func viewDidLoad() {
+    if let name = userName{
+      title = name
+    }
     super.viewDidLoad()
     
   }
@@ -77,7 +80,6 @@ class DetailUITableViewController: UITableViewController {
       //以设备的宽为rect的长 长为宽的1.5倍 好像比较好
       let rowHeight = view.bounds.width / 1.5
       return rowHeight
-      
     default:
       return UITableViewAutomaticDimension
     }
