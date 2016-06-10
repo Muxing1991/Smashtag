@@ -33,14 +33,12 @@ class TweetTableViewCell: UITableViewCell {
         let qos = Int(QOS_CLASS_USER_INITIATED.rawValue)
         let queue = dispatch_get_global_queue(qos, 0)
         dispatch_async(queue){
-          let imageData = NSData(contentsOfURL: profileImageURL)
-          dispatch_async(dispatch_get_main_queue()){
-            self.tweetAvatar?.image = UIImage(data: imageData!)
-            
+          if let imageData = NSData(contentsOfURL: profileImageURL){
+            dispatch_async(dispatch_get_main_queue()){
+              self.tweetAvatar?.image = UIImage(data: imageData)
+            }
           }
         }
-        
-        
       }
     }
   }

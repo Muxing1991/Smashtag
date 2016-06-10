@@ -19,8 +19,7 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
       SearchTextField.text = searchText
       tweets.removeAll()
       self.tableView.reloadData()
-      refresh()
-      
+      refresh()     
     }
   }
   var lastSuccessRequest: TwitterRequest?
@@ -99,6 +98,9 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
   struct MyContant{
     static private let cellIdentifier = "tweetCell"
     static private let showMentions = "showMentions"
+  }
+  //MARK: Unwind segue goback
+  @IBAction func goBack(segue: UIStoryboardSegue){
   }
   
   //MARK: tableView dataSource
