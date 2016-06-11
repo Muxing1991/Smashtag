@@ -89,6 +89,20 @@ class DetailUITableViewController: UITableViewController {
       return UITableViewAutomaticDimension
     }
   }
+  //决定特定的segue是否应该被执行 对于Url的cell 返回false 不执行 直接Safari 打开
+  override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+    if let index = tableView.indexPathForSelectedRow{
+      let mention = mentions!.msg[index.section]
+      switch mention{
+      case .Urls(let urls):
+        UIApplication.sharedApplication().openURL(NSURL(string: urls[index.row].keyword)!)
+        return false
+      default: break
+      }
+    }
+    return true
+  }
+  
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if let id = segue.identifier{
       switch id{
