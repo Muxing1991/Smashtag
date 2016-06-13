@@ -22,6 +22,7 @@ class DetailUITableViewController: UITableViewController {
     static let goBackSearch = "goBackSearch"
     static let lebelCellId = "detailLabel"
     static let imageCellId = "detailImage"
+    static let imageSegueId = "imageDisplay"
   }
   
   //MARK: tableview.datasource
@@ -48,7 +49,7 @@ class DetailUITableViewController: UITableViewController {
       cell.imageUrl = mediaItems[indexPath.row].url
       return cell
     case .Hashtags(let items):
-    let cell = dequeueDetailLabelCellWithIdentifier(indexPath)
+      let cell = dequeueDetailLabelCellWithIdentifier(indexPath)
       cell.mentionLabel.text = items[indexPath.row].keyword
       return cell
     case .Urls(let items):
@@ -65,7 +66,7 @@ class DetailUITableViewController: UITableViewController {
   private func cellForCurrying(identifier: String) -> (NSIndexPath) -> UITableViewCell{
     return {
       indexpath in
-      let cell  = self.tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexpath) 
+      let cell  = self.tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexpath)
       return cell
     }
   }
@@ -97,7 +98,13 @@ class DetailUITableViewController: UITableViewController {
       case .Urls(let urls):
         UIApplication.sharedApplication().openURL(NSURL(string: urls[index.row].keyword)!)
         return false
-      default: break
+      case .Images(_):
+        if  (tableView.cellForRowAtIndexPath(index) as? DetailImageUITableViewCell)?.detailImage.image == nil {
+          return false
+        }
+      default:
+        return true
+      
       }
     }
     return true
@@ -118,9 +125,24 @@ class DetailUITableViewController: UITableViewController {
             }
           }
         }
+      case MyConstan.imageSegueId:
+        if let ivc = segue.destinationViewController as? ImageUIViewController{
+          if let selectIndex = tableView.indexPathForSelectedRow{
+            if let imageCell = tableView.cellForRowAtIndexPath(selectIndex) as? DetailImageUITableViewCell{
+              switch mentions!.msg[selectIndex.section] {
+              case .Images(let img):
+                if imageCell.detailImage.image != nil{
+                   ivc.myImageItem = ImageMediaItem(image: imageCell.detailImage.image!, aspectRatio: img[selectIndex.row].aspectRatio)
+                }
+              default:
+                break
+              }
+            }
+          }
+        }
       default: break
       }
     }
   }
-  
 }
+
