@@ -16,6 +16,8 @@
 		448B869D1CF6E90900637B06 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 448B869B1CF6E90900637B06 /* LaunchScreen.storyboard */; };
 		448B86A81CF6E90900637B06 /* SmashtagTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448B86A71CF6E90900637B06 /* SmashtagTests.swift */; };
 		448B86B31CF6E90900637B06 /* SmashtagUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 448B86B21CF6E90900637B06 /* SmashtagUITests.swift */; };
+		449C986F1D0C4EAA00BAA44F /* ImageUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449C986E1D0C4EAA00BAA44F /* ImageUIViewController.swift */; };
+		449C98711D0C4FC800BAA44F /* ImageMediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 449C98701D0C4FC800BAA44F /* ImageMediaItem.swift */; };
 		44ECC5291CF729BA008D3A00 /* TweetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44ECC5281CF729BA008D3A00 /* TweetTableViewCell.swift */; };
 		44ECC52F1CF72D39008D3A00 /* MediaItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44ECC52B1CF72D39008D3A00 /* MediaItem.swift */; };
 		44ECC5301CF72D39008D3A00 /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44ECC52C1CF72D39008D3A00 /* Tweet.swift */; };
@@ -58,6 +60,8 @@
 		448B86AE1CF6E90900637B06 /* SmashtagUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SmashtagUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		448B86B21CF6E90900637B06 /* SmashtagUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmashtagUITests.swift; sourceTree = "<group>"; };
 		448B86B41CF6E90900637B06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		449C986E1D0C4EAA00BAA44F /* ImageUIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageUIViewController.swift; sourceTree = "<group>"; };
+		449C98701D0C4FC800BAA44F /* ImageMediaItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageMediaItem.swift; sourceTree = "<group>"; };
 		44ECC5281CF729BA008D3A00 /* TweetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetTableViewCell.swift; sourceTree = "<group>"; };
 		44ECC52B1CF72D39008D3A00 /* MediaItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaItem.swift; sourceTree = "<group>"; };
 		44ECC52C1CF72D39008D3A00 /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
@@ -117,6 +121,7 @@
 			children = (
 				448B86921CF6E90900637B06 /* AppDelegate.swift */,
 				448B86961CF6E90900637B06 /* Main.storyboard */,
+				449C986E1D0C4EAA00BAA44F /* ImageUIViewController.swift */,
 				4410D7E41D05B46600D9BACE /* DetailUITableViewController.swift */,
 				4425F0A31CF71AC2001C8B36 /* TweetUITableViewController.swift */,
 				44EF38BD1D083B1B00CE0D91 /* DetailLabelUITableViewCell.swift */,
@@ -156,6 +161,7 @@
 				44ECC52C1CF72D39008D3A00 /* Tweet.swift */,
 				44ECC52D1CF72D39008D3A00 /* TwitterRequest.swift */,
 				44ECC52E1CF72D39008D3A00 /* User.swift */,
+				449C98701D0C4FC800BAA44F /* ImageMediaItem.swift */,
 			);
 			path = Twitter;
 			sourceTree = "<group>";
@@ -303,7 +309,9 @@
 				44ECC5291CF729BA008D3A00 /* TweetTableViewCell.swift in Sources */,
 				4410D7E71D05B81300D9BACE /* Mentions.swift in Sources */,
 				44ECC5311CF72D39008D3A00 /* TwitterRequest.swift in Sources */,
+				449C98711D0C4FC800BAA44F /* ImageMediaItem.swift in Sources */,
 				44ECC5321CF72D39008D3A00 /* User.swift in Sources */,
+				449C986F1D0C4EAA00BAA44F /* ImageUIViewController.swift in Sources */,
 				44EF38C01D083B3200CE0D91 /* DetailImageUITableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
