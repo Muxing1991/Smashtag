@@ -10,9 +10,12 @@ import UIKit
 
 class TweetTableViewController: UITableViewController,UITextFieldDelegate {
   
+  
+  
   //model 
   var tweets = [[Tweet]]()
-  var searchText: String? = "#stanford" {
+  //设为最后一次查询的结果
+  var searchText: String? = UserData.sharedInstantce.lastRecentSearchQuery {
     didSet{
       lastSuccessRequest = nil
       //清空model
@@ -75,10 +78,13 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
   }
   
   func textFieldShouldReturn(textField: UITextField) -> Bool {
+    //如果参数就是outlet
     if textField == SearchTextField{
       //隐藏键盘
       textField.resignFirstResponder()
       searchText = textField.text
+      //插入查询的字符
+      UserData.sharedInstantce.newSearchQueryInsert(searchText!)
     }
     return true
   }

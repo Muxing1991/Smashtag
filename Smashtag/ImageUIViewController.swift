@@ -78,13 +78,7 @@ class ImageUIViewController: UIViewController, UIScrollViewDelegate {
     scrollView.addSubview(imageView)
     
   }
-  
-  override func viewWillAppear(animated: Bool) {
-    super.viewDidAppear(animated)
-    
-  }
-  
-  
+   
   func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
     return imageView
   }
