@@ -24,6 +24,10 @@ class HistoryUITableViewController: UITableViewController {
     tableView.reloadData()
   }
  
+  private class Constant{
+    static let cellIdentifier = "searchHistoryCell"
+    static let segue2TweetsIdentifier = "history2Search"
+  }
   
  override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
     return 1
@@ -33,7 +37,7 @@ class HistoryUITableViewController: UITableViewController {
     return UserData.sharedInstantce.searchHistory.count
   }
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = UITableViewCell()
+    let cell = tableView.dequeueReusableCellWithIdentifier(Constant.cellIdentifier, forIndexPath: indexPath)
     cell.textLabel?.text = UserData.sharedInstantce.searchHistory[indexPath.row]
     return cell
   }
@@ -47,6 +51,19 @@ class HistoryUITableViewController: UITableViewController {
     if editingStyle == .Delete{
       UserData.sharedInstantce.searchHistoryRemoveAt(indexPath.row)
       tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+    }
+  }
+  
+  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    if let id = segue.identifier{
+      switch id {
+      case Constant.segue2TweetsIdentifier:
+        if let tvc = segue.destinationViewController as? TweetTableViewController{
+          tvc.searchText = (sender as! UITableViewCell).textLabel?.text
+        }
+      default:
+        break
+      }
     }
   }
   
