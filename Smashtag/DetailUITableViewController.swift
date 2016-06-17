@@ -23,6 +23,7 @@ class DetailUITableViewController: UITableViewController {
     static let lebelCellId = "detailLabel"
     static let imageCellId = "detailImage"
     static let imageSegueId = "imageDisplay"
+    static let openURL = "openURL"
   }
   
   //MARK: tableview.datasource
@@ -125,6 +126,14 @@ class DetailUITableViewController: UITableViewController {
             }
           }
         }
+//      case MyConstan.openURL:
+//        if let wvc = segue.destinationViewController as? UIWebViewController{
+//          if let selectRow = sender as? DetailLabelUITableViewCell{
+//            if let url = selectRow.mentionLabel.text{
+//              wvc.url = NSURL(string: url)
+//            }
+//          }
+//        }
       case MyConstan.imageSegueId:
         if let ivc = segue.destinationViewController as? ImageUIViewController{
           if let selectIndex = tableView.indexPathForSelectedRow{
