@@ -20,8 +20,10 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
       lastSuccessRequest = nil
       //清空model
       SearchTextField.text = searchText
+      UserData.sharedInstantce.newSearchQueryInsert(searchText!)
       tweets.removeAll()
       self.tableView.reloadData()
+      
       refresh()     
     }
   }
@@ -54,6 +56,10 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
               sender?.endRefreshing()
             }
           }
+          else{
+            //没有结果 也要停止
+            sender?.endRefreshing()
+          }
         }
       }
     }
@@ -74,6 +80,7 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
     didSet{
       SearchTextField.delegate = self
       SearchTextField.text = searchText
+      
     }
   }
   
@@ -84,7 +91,7 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
       textField.resignFirstResponder()
       searchText = textField.text
       //插入查询的字符
-      UserData.sharedInstantce.newSearchQueryInsert(searchText!)
+      
     }
     return true
   }
@@ -107,6 +114,7 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
   }
   //MARK: Unwind segue goback
   @IBAction func goBack(segue: UIStoryboardSegue){
+    print("when unwind segue back to presenter you will see this")
   }
   
   //MARK: tableView dataSource
