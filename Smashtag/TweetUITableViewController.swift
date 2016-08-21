@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import CoreData
 
 class TweetTableViewController: UITableViewController,UITextFieldDelegate {
   
-  
+  //Core Data 上下文
+  var managedObjectContext: NSManagedObjectContext? = (UIApplication.sharedApplication().delegate as? AppDelegate)?.managedObjectContext
   
   //model 
   var tweets = [[Tweet]]()
@@ -54,6 +56,7 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
               self.lastSuccessRequest = request
               self.tableView.reloadData()
               sender?.endRefreshing()
+              self.updateDatabase(newTweets)
             }
           }
           else{
@@ -141,5 +144,19 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
         }
       }
     }
+  }
+  
+  //MARK: - Core Data
+  private func updateDatabase(tweets: [Tweet]){
+    managedObjectContext?.performBlock({ 
+      for tweetInfo in tweets {
+       _ = TweetModal.tweetModalWithTweetInfo(tweetInfo, inmanagedObjectContext: self.managedObjectContext!)
+      }
+      do {
+        try self.managedObjectContext?.save()
+      } catch let error{
+        print("Core Data has error: \(error)")
+      }
+    })
   }
 }
