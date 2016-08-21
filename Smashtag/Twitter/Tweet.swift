@@ -148,12 +148,26 @@ private extension NSString {
     }
 }
 
+//private extension String {
+//    var asTwitterDate: NSDate? {
+//        get {
+//            let dateFormatter = NSDateFormatter()
+//            dateFormatter.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
+//            return dateFormatter.dateFromString(self)
+//        }
+//    }
+//}
+
+//新的NSDateFormatter 增加了locale 的设定 要求有关语言学文化的locale
+private let twitterDateFormatter: NSDateFormatter = {
+  let formatter = NSDateFormatter()
+  formatter.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
+  formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+  return formatter
+}()
+
 private extension String {
-    var asTwitterDate: NSDate? {
-        get {
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
-            return dateFormatter.dateFromString(self)
-        }
-    }
+  var asTwitterDate: NSDate? {
+    return twitterDateFormatter.dateFromString(self)
+  }
 }
