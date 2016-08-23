@@ -66,6 +66,7 @@ class DetailUITableViewController: UITableViewController {
   //函数的柯里化currying
   private func cellForCurrying(identifier: String) -> (NSIndexPath) -> UITableViewCell{
     return {
+      [unowned self]
       indexpath in
       let cell  = self.tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexpath)
       return cell

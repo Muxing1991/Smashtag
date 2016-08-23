@@ -7,89 +7,72 @@
 //
 
 import UIKit
+import CoreData
 
-class TwittersTableViewController: UITableViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    // MARK: - Table view data source
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
-
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+class TwittersTableViewController: CoreDataTableViewController {
+  
+//  //MARK: - Modal
+//  var mention: String?{
+//    didSet{
+//      updateUI()
+//    }
+//  }
+//  
+//  var context: NSManagedObjectContext?{
+//    didSet{
+//      updateUI()
+//    }
+//  }
+//  
+//  
+//  //MARK: - Method
+//  //当context 与 mention 有了值 构造NSFetchedResultsController 给 fetchedResultsController 
+//  //fetchedResultsController自动抓取数据
+//  private func updateUI(){
+//    if let context = context where mention?.characters.count > 0{
+//      let request = NSFetchRequest(entityName: "TwitterUserModal")
+//      request.predicate = NSPredicate(format: "any tweets.text contains [c] %@", mention!)
+//      //增加不分辨大小写 增加一个参数 seletor
+//      request.sortDescriptors = [NSSortDescriptor(key: "num", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
+//      fetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+//    } else {
+//      fetchedResultsController = nil
+//    }
+//  }
+//  private func tweetsCountByTweeter(user: TwitterUserModal) -> Int?{
+//    var count: Int?
+//    user.managedObjectContext?.performBlockAndWait({
+//      let request = NSFetchRequest(entityName: "TweetModal")
+//      request.predicate = NSPredicate(format: "text contains [c] %@ and tweeter = %@", self.mention!, user)
+//      count = user.managedObjectContext?.countForFetchRequest(request, error: nil)
+//    })
+//    
+//    return count
+//  }
+//  
+//  
+//  //MARK: - TableViewController Data Source
+//  //CoreDataTableViewController 实现了 numberofsection numberofrowinsection  cell要自己实现
+//  override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+//    let cell = tableView.dequeueReusableCellWithIdentifier("TwitterCell", forIndexPath: indexPath)
+//    
+//    // 用fetchedResultsController来获取特定indexpath的对象
+//    if let twitter = fetchedResultsController?.objectAtIndexPath(indexPath) as? TwitterUserModal{
+//      //这里access 访问了database 所以 performBlock
+//      var sName: String?
+//      twitter.managedObjectContext?.performBlockAndWait({
+//        sName = twitter.screenName
+//      })
+//      if let name = sName{
+//        cell.textLabel?.text = "@\(name)"
+//      }
+//      //根据特定的用户去搜索 本次推文中 该用户有多少条记录
+//      if let count = tweetsCountByTweeter(twitter){
+//        cell.detailTextLabel?.text = "posted \(count) tweets"
+//      }
+//    }
+//    
+//    return cell
+//  }
 
 }
