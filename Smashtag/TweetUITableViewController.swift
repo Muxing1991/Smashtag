@@ -14,7 +14,7 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
   //Core Data 上下文
   var managedObjectContext: NSManagedObjectContext? = (UIApplication.sharedApplication().delegate as? AppDelegate)?.managedObjectContext
   
-  //model 
+  //model
   var tweets = [[Tweet]]()
   //设为最后一次查询的结果
   var searchText: String? = UserData.sharedInstantce.lastRecentSearchQuery {
@@ -26,7 +26,7 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
       tweets.removeAll()
       self.tableView.reloadData()
       
-      refresh()     
+      refresh()
     }
   }
   var lastSuccessRequest: TwitterRequest?
@@ -46,17 +46,18 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
   
   
   @IBAction func refresh(sender: UIRefreshControl?) {
-    if searchText != nil {
+    if let text = searchText {
       if let request = nextRequestToAttempt{
         request.fetchTweets{
+          [weak self]
           (newTweets) -> Void in
           if newTweets.count > 0 {
             dispatch_async(dispatch_get_main_queue()){
-              self.tweets.insert(newTweets, atIndex: 0)
-              self.lastSuccessRequest = request
-              self.tableView.reloadData()
+              self?.tweets.insert(newTweets, atIndex: 0)
+              self?.lastSuccessRequest = request
+              self?.tableView.reloadData()
               sender?.endRefreshing()
-              self.updateDatabase(newTweets)
+              self?.updateMentionDatabase(newTweets,tag: text)
             }
           }
           else{
@@ -69,8 +70,10 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
     else {
       sender?.endRefreshing()
     }
-
+    
   }
+  
+  
   
   func refresh(){
     if refreshControl != nil{
@@ -78,7 +81,7 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
     }
     refresh(refreshControl)
   }
-
+  
   @IBOutlet weak var SearchTextField: UITextField!{
     didSet{
       SearchTextField.delegate = self
@@ -107,13 +110,13 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
     tableView.rowHeight = UITableViewAutomaticDimension
     refresh()
     
-    //MARK: attributedText 测试
-//    SearchTextField.attributedText = NSAttributedString(string: "#trump", attributes: [NSFontAttributeName:UIFont(name: "Georgia", size: 15.0)!,NSForegroundColorAttributeName:UIColor.blueColor()])
+    
   }
   
   struct MyContant{
     static private let cellIdentifier = "tweetCell"
     static private let showMentions = "showMentions"
+    static private let twittersCellIdentifier = "DisplayTwitters"
   }
   //MARK: Unwind segue goback
   @IBAction func goBack(segue: UIStoryboardSegue){
@@ -143,20 +146,59 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
           }
         }
       }
+    } else if segue.identifier == MyContant.twittersCellIdentifier{
+      //对Twitter按钮的segue进行prepare
+//      if let TTVC = segue.destinationViewController as? TwittersTableViewController{
+//        TTVC.context = self.managedObjectContext
+//        TTVC.mention = SearchTextField.text
+//      }
     }
   }
   
   //MARK: - Core Data
-  private func updateDatabase(tweets: [Tweet]){
-    managedObjectContext?.performBlock({ 
-      for tweetInfo in tweets {
-       _ = TweetModal.tweetModalWithTweetInfo(tweetInfo, inmanagedObjectContext: self.managedObjectContext!)
+  //private func updateDatabase(tweets: [Tweet], tag: String){
+    //    managedObjectContext?.performBlock({
+    //      for tweetInfo in tweets {
+    //        _ = TweetModal.tweetModalWithTweetInfo(tweetInfo, inmanagedObjectContext: self.managedObjectContext!,tag: tag)
+    //      }
+    //      do {
+    //        //手动保存
+    //        try self.managedObjectContext?.save()
+    //      } catch let error{
+    //        print("Core Data has error: \(error)")
+    //      }
+    //      self.printCountOfRequestDatabase()
+    //      print("done")
+    //    })
+  //}
+  //利用获取的tweet数组 和 请求的字符串 构造一些 mention
+  private func updateMentionDatabase(tweets: [Tweet], tag: String){
+    managedObjectContext?.performBlock{
+      for item in tweets{
+        //将每一个tweet的 ＃ @ 都创建或者加一 到数据库中
+        for hashtag in item.hashtags{
+          _ = Mention.mentionWithTextInfo(hashtag.keyword, tag: tag, inManagedObjectContext: self.managedObjectContext!)
+        }
+        for userMention in item.userMentions{
+          _ = Mention.mentionWithTextInfo(userMention.keyword, tag: tag, inManagedObjectContext: self.managedObjectContext!)
+        }
+        _ = Mention.mentionWithTextInfo("@\(item.user.name)", tag: tag, inManagedObjectContext: self.managedObjectContext!)
       }
-      do {
-        try self.managedObjectContext?.save()
-      } catch let error{
-        print("Core Data has error: \(error)")
+    }
+  }
+  
+  private func printCountOfRequestDatabase(){
+    managedObjectContext?.performBlock({
+      if let tweets = try? self.managedObjectContext?.executeFetchRequest(NSFetchRequest(entityName: "TweetModal")){
+        print("tweets count:\(tweets?.count)")
+      }
+      if let usersCount = self.managedObjectContext?.countForFetchRequest(NSFetchRequest(entityName: "TwitterUserModal"), error: nil){
+        print("users count: \(usersCount)")
       }
     })
   }
+  
+  
+  
+  
 }

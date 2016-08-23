@@ -7,8 +7,16 @@
 //
 
 import UIKit
+import CoreData
 
 class HistoryUITableViewController: UITableViewController {
+  
+
+  
+  //Context
+  var managedObjectContext: NSManagedObjectContext? = (UIApplication.sharedApplication().delegate as? AppDelegate)?.managedObjectContext
+    
+  
   
   
   override func viewDidLoad() {
@@ -23,13 +31,14 @@ class HistoryUITableViewController: UITableViewController {
     //每次出现前更新数据
     tableView.reloadData()
   }
- 
+  
   private class Constant{
     static let cellIdentifier = "searchHistoryCell"
     static let segue2TweetsIdentifier = "history2Search"
+    static let segue2Popularity = "popularityDisplay"
   }
   
- override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+  override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
     return 1
   }
   
@@ -49,10 +58,32 @@ class HistoryUITableViewController: UITableViewController {
   
   override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
     if editingStyle == .Delete{
+      let tag = UserData.sharedInstantce.searchHistory[indexPath.row]
       UserData.sharedInstantce.searchHistoryRemoveAt(indexPath.row)
       tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+      deleteManagedObjectFromDatabase(tag)
     }
   }
+  
+  //MARK: - CoreData
+  //删除指定tag的mention
+  private func deleteManagedObjectFromDatabase(tag: String){
+    managedObjectContext?.performBlock{
+      let request = NSFetchRequest(entityName: "Mention")
+      request.predicate = NSPredicate(format: "tag = %@", tag)
+      if let result = try? self.managedObjectContext?.executeFetchRequest(request){
+        for item in result! {
+          self.managedObjectContext?.deleteObject(item as! Mention)
+        }
+      }
+    }
+  }
+  
+  //点击执行segue
+  override func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
+    performSegueWithIdentifier(Constant.segue2Popularity, sender: indexPath)
+  }
+  
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if let id = segue.identifier{
@@ -61,6 +92,14 @@ class HistoryUITableViewController: UITableViewController {
         if let tvc = segue.destinationViewController as? TweetTableViewController{
           tvc.searchText = (sender as! UITableViewCell).textLabel?.text
         }
+      case Constant.segue2Popularity:
+        //TODO:
+        if let popularityTVC = segue.destinationViewController as? PopularityTableViewController, let indexPath = sender as? NSIndexPath{
+          //把点击那一行的搜索标签赋值给controller
+          popularityTVC.query = UserData.sharedInstantce.searchHistory[indexPath.row]
+          popularityTVC.context = managedObjectContext
+        }
+        break
       default:
         break
       }
