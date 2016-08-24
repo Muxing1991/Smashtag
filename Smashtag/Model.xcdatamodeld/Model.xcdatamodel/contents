@@ -4,8 +4,25 @@
         <attribute name="tag" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="times" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="from" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TweetModal" inverseName="mentions" inverseEntity="TweetModal" syncable="YES"/>
+    </entity>
+    <entity name="TweetModal" representedClassName=".TweetModal" syncable="YES">
+        <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="mentions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mention" inverseName="from" inverseEntity="Mention" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserModal" inverseName="newRelationship" inverseEntity="UserModal" syncable="YES"/>
+    </entity>
+    <entity name="UserModal" representedClassName=".UserModal" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="profileImageURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="screenName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="newRelationship" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TweetModal" inverseName="user" inverseEntity="TweetModal" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Mention" positionX="72" positionY="-99" width="128" height="88"/>
+        <element name="Mention" positionX="27" positionY="-99" width="128" height="103"/>
+        <element name="TweetModal" positionX="279" positionY="-99" width="128" height="118"/>
+        <element name="UserModal" positionX="232" positionY="125" width="128" height="118"/>
     </elements>
 </model>

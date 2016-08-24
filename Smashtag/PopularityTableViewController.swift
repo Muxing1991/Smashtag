@@ -35,7 +35,7 @@ class PopularityTableViewController: CoreDataTableViewController{
     //构造NSFetchRequest 赋值给 fetchedResultsController
     if let context = context where query?.characters.count > 0{
       let request = NSFetchRequest(entityName: "Mention")
-      request.predicate = NSPredicate(format: "tag = %@", query!)
+      request.predicate = NSPredicate(format: "tag = %@ and times > 1", query!)
       //先按照次数排序 再按照无大小写区别的 内容排序
       request.sortDescriptors = [
       NSSortDescriptor(key: "times", ascending: false),
