@@ -148,57 +148,52 @@ class TweetTableViewController: UITableViewController,UITextFieldDelegate {
       }
     } else if segue.identifier == MyContant.twittersCellIdentifier{
       //对Twitter按钮的segue进行prepare
-//      if let TTVC = segue.destinationViewController as? TwittersTableViewController{
-//        TTVC.context = self.managedObjectContext
-//        TTVC.mention = SearchTextField.text
-//      }
+      //      if let TTVC = segue.destinationViewController as? TwittersTableViewController{
+      //        TTVC.context = self.managedObjectContext
+      //        TTVC.mention = SearchTextField.text
+      //      }
     }
   }
   
   //MARK: - Core Data
-  //private func updateDatabase(tweets: [Tweet], tag: String){
-    //    managedObjectContext?.performBlock({
-    //      for tweetInfo in tweets {
-    //        _ = TweetModal.tweetModalWithTweetInfo(tweetInfo, inmanagedObjectContext: self.managedObjectContext!,tag: tag)
-    //      }
-    //      do {
-    //        //手动保存
-    //        try self.managedObjectContext?.save()
-    //      } catch let error{
-    //        print("Core Data has error: \(error)")
-    //      }
-    //      self.printCountOfRequestDatabase()
-    //      print("done")
-    //    })
-  //}
+
   //利用获取的tweet数组 和 请求的字符串 构造一些 mention
   private func updateMentionDatabase(tweets: [Tweet], tag: String){
     managedObjectContext?.performBlock{
+      [weak weakself = self] in
       for item in tweets{
-        //将每一个tweet的 ＃ @ 都创建或者加一 到数据库中
-        for hashtag in item.hashtags{
-          _ = Mention.mentionWithTextInfo(hashtag.keyword, tag: tag, inManagedObjectContext: self.managedObjectContext!)
+        //判断是否已经存在 创建一组 TweetModal UserModal 与 Mention
+        let (tweet, isNew) = TweetModal.tweetModalWithTweetInfo(item, inManagedObjectContext: weakself!.managedObjectContext!)
+        //当新建成功时 进行mention的初始化
+        //如果tweet已经存在了 没必要再初始化其mention 并添加进去
+        guard tweet != nil && isNew == true else { return }
+        let mentionOfTweet = tweet!.mutableSetValueForKey("mentions")
+        let allMentions = item.hashtags.map{ return $0.keyword } + item.userMentions.map{ return $0.keyword }
+        for mention in allMentions{
+          if let newMention = Mention.mentionWithTextInfo(mention, tag: tag, inManagedObjectContext: weakself!.managedObjectContext!){
+            //为tweet的mentions属性 集合 添加 mention成员 执行绑定
+            //其实没必要绑定 只需要在新的tweet的condition中执行上一步的mentionWithTextInfo  
+            //建立这些Entities 只是为了扩展性
+            mentionOfTweet.addObject(newMention)
+          }
         }
-        for userMention in item.userMentions{
-          _ = Mention.mentionWithTextInfo(userMention.keyword, tag: tag, inManagedObjectContext: self.managedObjectContext!)
-        }
-        _ = Mention.mentionWithTextInfo("@\(item.user.name)", tag: tag, inManagedObjectContext: self.managedObjectContext!)
+        self.printCountOfMentionInTweet(tweet!)
       }
+      //记得手动保存
+      do{
+        try weakself?.managedObjectContext?.save()
+      } catch let error{
+        print("autoSave failure error: \(error)")
+      }
+      print("autoSave done")
     }
   }
   
-  private func printCountOfRequestDatabase(){
-    managedObjectContext?.performBlock({
-      if let tweets = try? self.managedObjectContext?.executeFetchRequest(NSFetchRequest(entityName: "TweetModal")){
-        print("tweets count:\(tweets?.count)")
-      }
-      if let usersCount = self.managedObjectContext?.countForFetchRequest(NSFetchRequest(entityName: "TwitterUserModal"), error: nil){
-        print("users count: \(usersCount)")
-      }
-    })
+  private func printCountOfMentionInTweet(tweetModal: TweetModal){
+    let request = NSFetchRequest(entityName: "Mention")
+    request.predicate = NSPredicate(format: "from contains %@", tweetModal)
+    let num = self.managedObjectContext?.countForFetchRequest(request, error: nil)
+    print("there has \((num ?? 0)) mentions in this New TweetModal ID:\((tweetModal.id ?? "errorID"))")
   }
-  
-  
-  
   
 }
