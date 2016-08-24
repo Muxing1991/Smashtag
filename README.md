@@ -15,3 +15,4 @@
 + #####发现#Trump的热度比较高 
 
 ##3、Demo.gif
+![一个撇脚的魔法师](https://github.com/Muxing1991/Smashtag/raw/master/pictures/demo.gif)
