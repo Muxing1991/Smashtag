@@ -2,7 +2,7 @@
 //  Mention+CoreDataProperties.swift
 //  Smashtag
 //
-//  Created by 杨威 on 16/8/24.
+//  Created by 杨威 on 16/8/25.
 //  Copyright © 2016年 demo. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu

@@ -11,14 +11,14 @@
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="mentions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Mention" inverseName="from" inverseEntity="Mention" syncable="YES"/>
-        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserModal" inverseName="newRelationship" inverseEntity="UserModal" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserModal" inverseName="tweets" inverseEntity="UserModal" syncable="YES"/>
     </entity>
     <entity name="UserModal" representedClassName=".UserModal" syncable="YES">
         <attribute name="id" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="profileImageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="screenName" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="newRelationship" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TweetModal" inverseName="user" inverseEntity="TweetModal" syncable="YES"/>
+        <relationship name="tweets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TweetModal" inverseName="user" inverseEntity="TweetModal" syncable="YES"/>
     </entity>
     <elements>
         <element name="Mention" positionX="27" positionY="-99" width="128" height="103"/>
